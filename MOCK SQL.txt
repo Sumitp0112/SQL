@@ -1,0 +1,326 @@
+1] WAQTD DIFFERENT SALARY & DEPINTO WITH 21% DEDUCTION IN THE SALARY IN EMP TABLE IF 21% DEDUCTION IS MORE THAN 2000 RPS.
+ANS:
+SELECT DISTINCT SAL,DEPTNO,(SAL-(SAL*21/100))
+FROM EMP
+WHERE SAL-(SAL*21/100) > 2000;
+O/P:   
+  SAL     DEPTNO (SAL-(SAL*21/100))
+------ ---------- ------------------
+  2975         20            2350.25
+  2850         30             2251.5
+  3000         20               2370
+  5000         10               3950
+
+2] WAQTD ALL THE DETAILS & HALF TERM SALARY FOR THE EMP’S IF THE EMP IS EARNING AT LEAST 1250 RPS IN THE DEPTNO 10 OR 30 WITH HIRE DATE AFTER 03/12/1981
+ANS:
+SELECT EMP.*,SAL*6
+FROM EMP
+WHERE SAL >= 1250 AND
+	DEPTNO IN (10,20) AND
+	HIREDATE > '03-DEC-81';
+O/P: 
+  EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO      SAL*6
+------- ---------- --------- ---------- --------- ---------- ---------- ---------- ----------
+   7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20      18000
+   7934 MILLER     CLERK           7782 23-JAN-82       1300                    10       7800
+
+3] WAQTD NAMES OF EMP’S WHO HIRED AFTER 1975 BUT BEFORE 1985 EXCEPT THE YEAR 1982 & WORKING AS ‘CLERK’ OR ‘ANALYST’ OR ‘PRESIDENT’ EXCEPT THE DEPTNO 20.
+ANS:
+SELECT ENAME 
+FROM EMP
+WHERE HIREDATE BETWEEN '01-JAN-76' AND '31-DEC-84' AND
+	HIREDATE NOT LIKE '%82' AND
+	JOB IN ('CLERK','ANALYST','PRESIDENT') AND
+	DEPTNO NOT IN (20);
+O/P:
+ENAME
+-----
+KING
+JAMES
+
+4] WAQTD DETAILS OF EMP’S IF EMP IS HAVING CHAR ‘A’ IN THE NAME BUT NOT ‘S’. WITH EARNING AT MOST 3000 RPS WAGES WITHOUT HAVING MANAGER NO 7566,7839.
+ANS:
+SELECT *
+FROM EMP
+WHERE ENAME LIKE '%A%' AND
+	ENAME NOT LIKE '%S%' AND
+	SAL <= 3000 AND
+	MGR NOT IN (7566,7839);
+O/P:
+  EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+------- ---------- --------- ---------- --------- ---------- ---------- ----------
+   7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+   7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+   7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+
+5] WAQTD NAMES OF EMP’S IF EMP IS HIRED IN THE YEAR 1981 EXCEPT THE MONTHS FEB & MAY, WITH THE 4 DIGIT SALARY & STRING ‘AN’ IN THE DESIGNATION & EMP SHOULD BE HAVING COMMISSION.
+ANS:
+SELECT ENAME 
+FROM EMP
+WHERE HIREDATE LIKE '%81' AND
+	HIREDATE NOT LIKE '%FEB%' AND
+	HIREDATE NOT LIKE '%MAY%' AND
+	SAL LIKE '____' AND
+	JOB LIKE '%AN%' AND
+	COMM IS NOT NULL AND
+	COMM > 0;
+O/P:
+ENAME
+------
+MARTIN
+
+6] WAQTD THE O/P IN THE FOLLOWING FORMAT. HEY! ABC YOU ARE EARNING RPS.XYZ WITH HIKE OF 35% KGF 
+[IF EMP IS EARNING THE SALARY WITH THE RANGE 1250 TO 1600 WITH HAVING MANAGER NUMBER].
+ANS:
+SELECT 'HEY! '||ENAME||' YOU ARE EARNNG RPS. '||SAL||' WITH HIKE OF 35%'||(SAL+(SAL*35/100))
+FROM EMP
+WHERE SAL BETWEEN 1250 AND 1600 AND
+	MGR IS NOT NULL;
+O/P:
+------------------------------------------------------------
+HEY! ALLEN YOU ARE EARNNG RPS. 1600 WITH HIKE OF 35%2160
+HEY! WARD YOU ARE EARNNG RPS. 1250 WITH HIKE OF 35%1687.5
+HEY! MARTIN YOU ARE EARNNG RPS. 1250 WITH HIKE OF 35%1687.5
+HEY! TURNER YOU ARE EARNNG RPS. 1500 WITH HIKE OF 35%2025
+HEY! MILLER YOU ARE EARNNG RPS. 1300 WITH HIKE OF 35%1755
+
+7] WAQTD NAMES OF EMP’S WHOSE DESIGNATION STARTS WITH EITHER ‘C’ OR ‘S’ WITH AT LEAST 1000 RPS WAGES WITHOUT COMMISSION.
+ANS:
+SELECT ENAME
+FROM EMP
+WHERE (JOB LIKE 'C%' OR
+	JOB LIKE 'S%') AND
+	SAL >= 1000 AND
+	COMM IS NULL AND
+	COMM > 0;
+O/P: no rows selected
+
+8] WAQTD EMP NAME, JOINING DATE & DEPTNO IF EMP’S NAME IS HAVING ‘N’ AS 2ND LAST CHAR & ‘I’ AT 2ND PLACE WITH HIRED MONTH OF NOVEMBER & SHOULD WORK EITHER IN THE DEPTNO 10 OR 30 EXCEPT ‘22-NOV-82’ & ‘17-NOV-87’ WITHOUT HAVING MANAGER NUMBER.
+ANS:
+SELECT ENAME,HIREDATE,DEPTNO
+FROM EMP
+WHERE ENAME LIKE '%N_' AND
+	ENAME LIKE '_I%' AND
+	HIREDATE LIKE '%NOV%' AND
+	DEPTNO IN (10,30) AND
+	HIREDATE NOT LIKE '22-NOV-82' AND
+	HIREDATE NOT LIKE '17-NOV-87' AND
+	MGR IS NULL;
+O/P:
+ENAME      HIREDATE      DEPTNO
+---------- --------- ----------
+KING       17-NOV-81         10
+
+9] WAQTD NAME, DESIGNATION & COMMISSION OF EMP’S WHO ARE EARNING COMMISSION WITH HAVING STRING ‘LES’ IN THE DESIGNATION & THAT COMMISSION SHOULD BE 3 DIGIT OR 1 DIGIT ONLY.
+ANS:
+SELECT ENAME,JOB,COMM
+FROM EMP
+WHERE COMM IS NOT NULL AND
+	JOB LIKE '%LES%' AND
+	(COMM LIKE '___' OR
+	COMM LIKE '_');
+O/P:
+ENAME      JOB             COMM
+---------- --------- ----------
+ALLEN      SALESMAN         300
+WARD       SALESMAN         500
+TURNER     SALESMAN           0
+
+10] WAQTD THE O/P IN THE FOLLOWING FORMAT. DEAR! ABC YOU ARE WORKING AS A XYZ AND HIRED ON PQR WITH THE SALARY IN HAND ORF.
+(IF EMP’S HALF_TERM SALARY IS LESS THAN 10K WITH NAME HAVING 4TH LAST CHAR 'R').
+ANS:
+SELECT 'DEAR! '||ENAME||' YOU ARE WORKING AS A'||JOB||' AND HIREDATE ON '||HIREDATE||' WITH THE SALARY IN HAND'||SAL
+FROM EMP
+WHERE SAL*6 < 10000 AND
+	ENAME LIKE '%R___';
+O/P:
+------------------------------------------------------------------------------------------------
+DEAR! MARTIN YOU ARE WORKING AS ASALESMAN AND HIREDATE ON 28-SEP-81 WITH THE SALARY IN HAND1250
+DEAR! TURNER YOU ARE WORKING AS ASALESMAN AND HIREDATE ON 08-SEP-81 WITH THE SALARY IN HAND1500
+
+11] EXPLAIN WHERE CLAUSE.
+ANS: 
+1.Used for Filtering Data
+The WHERE clause allows you to filter rows based on a specific condition.
+Example:
+SELECT * FROM EMP WHERE SALARY > 5000;
+
+2. Works with Various Operators
+Supports comparison operators like =, >, <, >=, <=, <> (not equal).
+Example:
+SELECT * FROM EMP WHERE DEPTNO = 10;
+
+3. Supports Logical Operators (AND, OR, NOT)
+You can combine multiple conditions using logical operators.
+Example:
+SELECT * FROM EMP 
+WHERE SALARY > 3000 AND DEPTNO = 20;
+
+4. Used with Pattern Matching (LIKE)
+LIKE is used for string pattern matching with % (wildcard).
+Example:
+SELECT * FROM EMP WHERE ENAME LIKE 'A%';
+
+5. Supports Range Filtering (BETWEEN)
+Used to filter data within a range of values.
+Example:
+SELECT * FROM EMP WHERE SALARY BETWEEN 2000 AND 5000;
+
+6. Works with Sets (IN)
+Used to filter results that match any value in a given set.
+Example:
+SELECT * FROM EMP WHERE DEPTNO IN (10, 20, 30);
+
+7. Used to Handle NULL Values (IS NULL / IS NOT NULL)
+Checks whether a column has a NULL value.
+Example:
+SELECT * FROM EMP WHERE COMM IS NULL;
+
+8. Applied in Subqueries
+Used inside subqueries to filter data based on another query.
+Example:
+SELECT * FROM EMP 
+WHERE SALARY > (SELECT AVG(SALARY) FROM EMP);
+
+9. Works with Date Filtering
+The WHERE clause is often used to filter records based on dates.
+Example:
+SELECT * FROM EMP WHERE HIREDATE > '01-JAN-2000';
+
+12] LIST OUT ALL THE OPERATORS IN SQL.
+ANS:
+1. ARITHMATIC  Operators:
+Used for mathematical operations.
+Operato    Description	        Example
+  +	    Addition	        SELECT 10 + 5; → 15
+  -	   Subtraction	        SELECT 10 - 5; → 5
+  *	 Multiplication	        SELECT 10 * 5; → 50
+  /	    Division	        SELECT 10 / 5; → 2
+  %	 Modulus (Remainder)	SELECT 10 % 3; → 1
+
+2. COMPARISON Operators:
+	
+Operator	Description	Example
+   =	        Equal to	SALARY = 5000
+   !=	        Not equal to	SALARY <> 5000
+
+3. RELATIONAL Operator:
+	Operator	Description	        Example
+
+           >	       Greater than	        SALARY > 5000
+           <	         Less than	        SALARY < 5000
+           >=	   Greater than or equal to	SALARY >= 5000
+           <=	   Less than or equal to	SALARY <= 5000
+
+4. LOGICAL Operator: Used to combine multiple conditions.
+
+Operator	Description	                        Example
+AND	Returns true if both conditions are true	SALARY > 5000 AND DEPTNO = 10
+OR	Returns true if at least one condition is true	SALARY > 5000 OR DEPTNO = 10
+NOT	Negates a condition	                        NOT (SALARY > 5000)
+
+5. CONCATENATION(||) Operator:
+	Is is used to join two given string
+Example:
+
+WAQTD THE O/P IN THE FOLLOWING FORMAT:
+	MR. ABC YOUR SALARY IS RS.XZY
+	ANS:
+	SELECT 'MR.'||ENAME||'YOUR SALARY IS RS.'||SAL
+
+6. SPECIAL Operator:
+
+Operator      Description	                             Example
+IN	      Checks if a value exists in a list	     DEPTNO IN (10, 20, 30)
+NOT IN	      Checks if a value does not exist in a list     DEPTNO NOT IN (10, 20, 30)
+BETWEEN	      Checks if a value is within a range	     SALARY BETWEEN 2000 AND 5000
+NOT BETWEEN   Checks if a value is outside a range	     SALARY NOT BETWEEN 2000 AND 5000
+IS NULL	      Checks if a value is NULL	                     COMM IS NULL
+IS NOT NULL   Checks if a value is not NULL	             COMM IS NOT NULL
+LIKE	      Matches a pattern                 	     ENAME LIKE 'A%'
+NOT LIKE      Reject a pattern     			     ENAME NOT LIKE 'A%' 
+
+7. SUB-QUERY Operator:
+Operator	Description	                                Example
+EXISTS	        Checks if a subquery returns any records	WHERE EXISTS (SELECT * FROM EMP WHERE SALARY > 5000)
+NOT EXISTS	Checks if a subquery returns no records	        WHERE NOT EXISTS (...)
+
+13] WRITE THE SYNTAX OF BOTH BETWEEN & LIKE OPERATOR WITH AN EXAMPLE.
+ANS:
+SYNTAX: BETWEEN OPERATOR
+	SELECT COL_NAME/EXPRESSION
+	FROM TABLE_NAME
+	WHERE COL_NAME BETWEEN LOWER_VALUS AND UPPER_VALUE;
+
+EXAMPLE:
+	SELECT ENAME, SAL
+	FROM EMP
+	WHERE SAL BETWEEN 3000 AND 8000;
+
+SYNTAX: LIKE
+	SELECT COL_NAME/EXPRESSION
+	FROM TABLE_NAME
+	WHERE COL_NAME LIKE 'PATTERN TO MATCH';
+
+EXAMPLE:
+	SELECT ENAME
+	FROM EMP
+	WHERE ENAME LIKE 'A%';
+
+14] EXPLAIN DISTINCT CLAUSE.
+ANS:	It is keyword use to display the unique data at the time of execution. The DISTINCT clause is used in SQL to remove duplicate values from the result set of a query. It ensures that only unique values are returned.
+1. Syntax of DISTINCT
+	SELECT DISTINCT column_name 
+	FROM table_name;
+
+2. Example: Using DISTINCT on a Single Column
+	SELECT DISTINCT DEPTNO 
+	FROM EMP;
+
+3. Using DISTINCT on Multiple Columns
+When DISTINCT is applied to multiple columns, it considers unique combinations of those columns.
+
+Example: Retrieve unique (DEPTNO, JOB) combinations
+	SELECT DISTINCT DEPTNO, JOB 
+	FROM EMP;
+
+4. DISTINCT vs GROUP BY
+DISTINCT removes duplicates but does not allow aggregate functions.
+GROUP BY groups data and can be used with aggregate functions like COUNT(), SUM(), etc.
+Example: Using DISTINCT vs GROUP BY
+	SELECT JOB, COUNT(*) 
+	FROM EMP 
+	GROUP BY JOB;
+
+5. DISTINCT with Aggregate Functions (Incorrect Usage)
+🚫 The following is incorrect because DISTINCT cannot be used inside an aggregate function directly:
+Example: 
+	SELECT COUNT(DISTINCT JOB) 
+	FROM EMP;
+
+15] EXPLAIN THE WORKING PROCEDURE OF THE BELOW STATEMENT.
+	SELECT
+	FROM
+	WHERE
+ANS:
+Working Procedure of the SQL Statement (SELECT ... FROM ... WHERE ...)
+In SQL, a SELECT statement follows a specific execution order, which determines how the query is processed. The standard format is:
+SELECT column_name(s)
+FROM table_name
+WHERE condition;
+
+ORDER OF EXECUTION:
+
+Although we write the query in the order:
+SELECT → FROM → WHERE,
+
+SQL actually executes it in the following order:
+
+FROM – Identifies the table(s) from which data will be retrieved.
+WHERE – Filters the rows based on specified conditions.
+SELECT – Chooses specific columns to display in the output.
+
+
+
+
+

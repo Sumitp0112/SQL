@@ -246,3 +246,16 @@ O/P:no rows selected
 THE ANNUAL SALARY IS MORE THAN RS.15000 IN DEPTNO 10 OR
 20 EXCEPT EMP'S HIRED IN THE YEAR 82.
 ANS:
+SELECT EMP.*, SAL*12
+FROM EMP
+WHERE SAL*12 > 15000 AND
+      DEPTNO IN (10,20) AND
+      HIREDATE NOT LIKE '%82';
+O/P:
+ EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO     SAL*12
+------ ---------- --------- ---------- --------- ---------- ---------- ---------- ----------
+  7566 JONES      MANAGER         7839 02-APR-81       2975                    20      35700
+  7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10      29400
+  7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20      36000
+  7839 KING       PRESIDENT            17-NOV-81       5000                    10      60000
+  7902 FORD       ANALYST         7566 03-DEC-81       3000                    20      36000

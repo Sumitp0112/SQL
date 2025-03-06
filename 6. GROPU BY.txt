@@ -330,10 +330,10 @@ FROM EMP
 WHERE HIREDATE > '01-JAN-80'
 GROUP BY JOB;
 O/P:
-  AVG(SAL)   MAX(SAL)   MIN(SAL) JOB
+   AVG(SAL)   MAX(SAL)   MIN(SAL) JOB
 ---------- ---------- ---------- ---------
-    1037.5       1300        800 CLERK
       1400       1600       1250 SALESMAN
+1116.66667       1300        950 CLERK
       5000       5000       5000 PRESIDENT
 2758.33333       2975       2450 MANAGER
       3000       3000       3000 ANALYST

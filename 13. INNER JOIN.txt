@@ -1,0 +1,530 @@
+1] WAQTD ENAME, DNAME of all the employees.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO;
+O/P:
+ENAME      DNAME
+---------- -----------
+SMITH      RESEARCH
+ALLEN      SALES
+WARD       SALES
+JONES      RESEARCH
+MARTIN     SALES
+BLAKE      SALES
+CLARK      ACCOUNTING
+SCOTT      RESEARCH
+KING       ACCOUNTING
+TURNER     SALES
+ADAMS      RESEARCH
+JAMES      SALES
+FORD       RESEARCH
+MILLER     ACCOUNTING
+
+2] WAQTD ENAME, SAL & LOC of all the employees.
+ANS:
+SELECT ENAME,SAL,LOC
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO;
+O/P:ENAME             SAL LOC
+---------- ---------- -------------
+SMITH             800 DALLAS
+ALLEN            1600 CHICAGO
+WARD             1250 CHICAGO
+JONES            2975 DALLAS
+MARTIN           1250 CHICAGO
+BLAKE            2850 CHICAGO
+CLARK            2450 NEW YORK
+SCOTT            3000 DALLAS
+KING             5000 NEW YORK
+TURNER           1500 CHICAGO
+ADAMS            1100 DALLAS
+JAMES             950 CHICAGO
+FORD             3000 DALLAS
+MILLER           1300 NEW YORK
+
+3] WAQTD ENAME, DEPTNO & DNAME of all the employees
+ANS: 
+ SELECT ENAME,EMP.DEPTNO,DNAME
+ FROM EMP INNER JOIN DEPT
+ ON EMP.DEPTNO = DEPT.DEPTNO;
+O/P:
+ENAME          DEPTNO DNAME
+---------- ---------- --------------
+SMITH              20 RESEARCH
+ALLEN              30 SALES
+WARD               30 SALES
+JONES              20 RESEARCH
+MARTIN             30 SALES
+BLAKE              30 SALES
+CLARK              10 ACCOUNTING
+SCOTT              20 RESEARCH
+KING               10 ACCOUNTING
+TURNER             30 SALES
+ADAMS              20 RESEARCH
+JAMES              30 SALES
+FORD               20 RESEARCH
+MILLER             10 ACCOUNTING
+
+4] WAQTD ENAME, DEPTNO & DNAME of employees working in DEPTNO 20.
+ANS:
+SELECT ENAME,EMP.DEPTNO,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE EMP.DEPTNO IN 20;
+O/P:
+ENAME          DEPTNO DNAME
+---------- ---------- --------------
+SMITH              20 RESEARCH
+JONES              20 RESEARCH
+SCOTT              20 RESEARCH
+ADAMS              20 RESEARCH
+FORD               20 RESEARCH
+
+5] WAQTD ENAME, DNAME of employees who are earning less than Rs.2000.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE SAL < 2000;
+O/P:
+ENAME      DNAME
+---------- ------------
+SMITH      RESEARCH
+ALLEN      SALES
+WARD       SALES
+MARTIN     SALES
+TURNER     SALES
+ADAMS      RESEARCH
+JAMES      SALES
+MILLER     ACCOUNTING
+
+6] WAQTD ENAME, LOC of employees working in ‘DALLAS’.
+ANS:
+SELECT ENAME,LOC
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE LOC = 'DALLAS';
+O/P:
+ENAME      LOC
+---------- -------
+SMITH      DALLAS
+JONES      DALLAS
+SCOTT      DALLAS
+ADAMS      DALLAS
+FORD       DALLAS
+
+7] WAQTD ENAME, SAL & DNAME of employees whose name starts with character ‘A’ & DNAME ends with character ‘S’.
+ANS:
+SELECT ENAME,SAL,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE ENAME LIKE 'A%' AND
+	DNAME LIKE '%S'; 
+O/P:
+ENAME             SAL DNAME
+---------- ---------- ------
+ALLEN            1600 SALES
+
+8] WAQTD ENAME, SAL, DNAME of all the employees who are earning more than ‘SCOTT’ in ‘ACCOUNTING’ department.
+ANS:
+SELECT ENAME,SAL,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE SAL > (SELECT SAL FROM EMP
+		WHERE ENAME = 'SCOTT') AND
+	DNAME = 'ACCOUNTING';
+O/P:
+
+ENAME             SAL DNAME
+---------- ---------- -----------
+KING             5000 ACCOUNTING
+
+9] WAQTD number of employees hired before ‘ALLEN’ in ‘RESEARCH’ department using joins.
+ANS:
+SELECT COUNT(*)
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE HIREDATE < (SELECT HIREDATE FROM EMP
+			WHERE ENAME = 'ALLEN') AND
+	DNAME = 'RESEARCH';
+O/P: 
+COUNT(*)
+---------
+        1
+
+10] WAQTD maximum SAL given to the employees working in same designation as that of ‘BLAKE’ in ‘DALLAS'.
+ANS:
+SELECT MAX(SAL)
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE JOB IN (SELECT JOB FROM EMP
+		WHERE ENAME IN ('BLAKE')) AND
+	LOC = 'DALLAS';
+O/P:
+ MAX(SAL)
+---------
+     2975
+
+11] WAQTD ENAME, HIREDATE & DNAME of employees hired in the month of ‘FEB’ & his DNAME must have second character as ‘A’.
+ANS:
+SELECT ENAME,HIREDATE,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE HIREDATE LIKE '%FEB%' AND
+	DNAME LIKE '_A%';
+O/P:
+ENAME      HIREDATE  DNAME
+---------- --------- -------
+ALLEN      20-FEB-81 SALES
+WARD       22-FEB-81 SALES
+
+12] WAQTD ENAME earning more than ‘MILLER’ in ‘NEW YORK’ using both Sub-query & joins.
+ANS:
+SELECT ENAME 
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE SAL > (SELECT SAL FROM EMP
+		WHERE ENAME = 'MILLER') AND
+	LOC = 'NEW YORK';
+O/P:
+ENAME
+------
+CLARK
+KING
+
+13] WAQTD ENAME & DNAME of employee who is having exactly 4 characters in his name & his DNAME should have 2 consecutive 'CC'.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE ENAME LIKE '____' AND
+	DNAME LIKE '%CC%';
+O/P:
+ENAME      DNAME
+---------- -----------
+KING       ACCOUNTING
+
+14] WAQTD DNAME, ENAME & LOC of employees hired before 1981 in ‘DALLAS’.
+ANS:
+SELECT DNAME,ENAME,LOC
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE HIREDATE < '01-JAN-81' AND
+	LOC = 'DALLAS';
+O/P:
+DNAME          ENAME      LOC
+-------------- ---------- -------
+RESEARCH       SMITH      DALLAS
+
+15] WAQTD ENAME, JOB, LOC of employees working in same designation as that of ‘JONES’ in ‘CHICAGO’.
+ANS:
+SELECT ENAME,JOB,LOC
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE JOB IN (SELECT JOB FROM EMP
+		WHERE ENAME = 'JONES') AND
+	LOC = 'CHICAGO';
+O/P:
+ENAME      JOB       LOC
+---------- --------- --------
+BLAKE      MANAGER   CHICAGO
+
+16] WAQTD ENAME, LOC of employees who is searching same SAL as that of ‘SCOTT‘ in ‘DALLAS’ & he was hired in the month of ‘DEC’.
+ANS:
+SELECT ENAME,LOC
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE SAL = (SELECT SAL FROM EMP
+		WHERE ENAME = 'SCOTT') AND
+	LOC = 'DALLAS' AND
+	HIREDATE LIKE '%DEC%'; 
+O/P:
+ENAME      LOC
+---------- ---------
+FORD       DALLAS
+
+17] WAQTD ENAME, DNAME of employees whose designation ends with string ‘MAN’ & his name must have 2 consecutive ‘LL’.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE JOB LIKE '%MAN' AND
+	ENAME LIKE '%LL%';
+O/P:
+ENAME      DNAME
+---------- -----------
+ALLEN      SALES
+
+18] WAQTD ENAME, DEPTNO & DNAME of employees working in same designation as that of ‘SMITH’ in ‘NEW YORK’.
+ANS:
+SELECT ENAME,EMP.DEPTNO,DNAME
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE JOB IN (SELECT JOB 
+		FROM EMP
+		WHERE ENAME = 'SMITH')AND
+	LOC IN 'NEW YORK';
+O/P:
+
+ENAME          DEPTNO DNAME
+---------- ---------- ------------
+MILLER             10 ACCOUNTING
+
+19] WAQTD ENAME & DNAME of employees hired after 1980 into ‘RESEARCH’ department & working as an ‘ANALYST’.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE HIREDATE > '31-DEC-1980' AND
+	DNAME = 'RESEARCH' AND
+	JOB = 'ANALYST';
+O/P:
+ENAME      DNAME
+---------- ----------
+SCOTT      RESEARCH
+FORD       RESEARCH
+
+20] WAQTD ENAME, SAL, LOC of employees whose SAL ends with 50 in ‘CHICAGO’ & his name must start with ‘M’ & ends with ‘N’.
+ANS:
+SELECT ENAME,SAL,LOC
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE SAL LIKE '%50' AND
+	LOC IN 'CHICAGO' AND
+	ENAME LIKE 'M%' AND
+	ENAME LIKE '%N';
+O/P:
+
+ENAME             SAL LOC
+---------- ---------- ---------
+MARTIN           1250 CHICAGO
+
+21] WAQTD ENAME, DNAME of employees earning less than ‘JAMES’ & must be hired in the year 1980 in ‘DALLAS’.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE SAL < (SELECT SAL 
+		FROM EMP
+		WHERE ENAME = 'JAMES')AND
+	HIREDATE BETWEEN '01-JAN-1980' AND '31-DEC-1980' AND
+	LOC = 'DALLAS';
+O/P:
+
+ENAME      DNAME
+---------- ----------
+SMITH      RESEARCH
+
+22] WAQTD ENAME & DEPTNO & DNAME of employees working as ‘SALESMAN’ or ‘MANAGER’ in DEPTNO 20 or 30 & he must be earning more than ‘WARD’ in ‘SALES’ or ‘RESEARCH’ department & he must get commission.
+ANS:
+SELECT ENAME, E.DEPTNO,DNAME
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE JOB IN ('SALESMAN','MANAGER')AND
+	E.DEPTNO IN (20,30) AND
+	SAL > (SELECT SAL
+		FROM EMP
+		WHERE ENAME = 'WARD')AND
+	DNAME IN ('SALES','RESEARCH') AND
+	COMM IS NOT NULL;
+O/P:
+ENAME          DEPTNO DNAME
+---------- ---------- ------
+ALLEN              30 SALES
+TURNER             30 SALES
+
+23] WAQTD ENAME of the employees & their LOC of all the employees.
+ANS:
+SELECT ENAME,LOC
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO; 
+O/P:
+
+ENAME      LOC
+---------- -----------
+SMITH      DALLAS
+ALLEN      CHICAGO
+WARD       CHICAGO
+JONES      DALLAS
+MARTIN     CHICAGO
+BLAKE      CHICAGO
+CLARK      NEW YORK
+SCOTT      DALLAS
+KING       NEW YORK
+TURNER     CHICAGO
+ADAMS      DALLAS
+JAMES      CHICAGO
+FORD       DALLAS
+MILLER     NEW YORK
+
+24] WAQTD DNAME & SAL for all the employee working in ‘ACCOUNTING‘ department.
+ANS:
+SELECT DNAME,SAL
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE DNAME = 'ACCOUNTING';
+O/P:
+
+DNAME                 SAL
+-------------- ----------
+ACCOUNTING           2450
+ACCOUNTING           5000
+ACCOUNTING           1300
+
+25] WAQTD DNAME & ANNUALSAL for all employees whose SAL is more than Rs.2340.
+ANS:
+SELECT DNAME,SAL*12
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE SAL > 2350;
+O/P:
+
+DNAME              SAL*12
+-------------- ----------
+RESEARCH            35700
+SALES               34200
+ACCOUNTING          29400
+RESEARCH            36000
+ACCOUNTING          60000
+RESEARCH            36000
+
+26] WAQTD ENAME & DNAME for employees having character ‘A’ in their DNAME.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE DNAME LIKE '%A%';
+O/P:
+
+ENAME      DNAME
+---------- --------------
+SMITH      RESEARCH
+ALLEN      SALES
+WARD       SALES
+JONES      RESEARCH
+MARTIN     SALES
+BLAKE      SALES
+CLARK      ACCOUNTING
+SCOTT      RESEARCH
+KING       ACCOUNTING
+TURNER     SALES
+ADAMS      RESEARCH
+JAMES      SALES
+FORD       RESEARCH
+MILLER     ACCOUNTING
+
+27] WAQTD ENAME & DNAME for all the employees working as ‘SALESMAN’.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE JOB = 'SALESMAN';
+O/P:
+
+ENAME      DNAME
+---------- ------
+ALLEN      SALES
+WARD       SALES
+MARTIN     SALES
+TURNER     SALES
+
+28] WAQTD ENNAME, DNAME & JOB for all the employees whose JOB & DNAME starts with character ‘S’.
+ANS:
+SELECT ENAME,DNAME,JOB
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE JOB LIKE 'S%' AND
+	DNAME LIKE 'S%';
+O/P:
+ENAME      DNAME          JOB
+---------- -------------- ---------
+ALLEN      SALES          SALESMAN
+WARD       SALES          SALESMAN
+MARTIN     SALES          SALESMAN
+TURNER     SALES          SALESMAN
+
+29] WAQTD ENAME, DNAME & MGR for employees reporting to 7839.
+ANS:
+SELECT ENAME,DNAME,MGR
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE MGR IN (SELECT EMPNO
+		FROM EMP 
+		WHERE EMPNO = 7839);
+O/P:
+
+ENAME      DNAME                 MGR
+---------- -------------- ----------
+JONES      RESEARCH             7839
+BLAKE      SALES                7839
+CLARK      ACCOUNTING           7839
+
+30] WAQTD ENAME, DNAME & HIREDATE for employees hired after 83 into ‘ACCOUNTING’ or ‘RESEARCH’ department.
+ANS:
+SELECT ENAME,DNAME,HIREDATE 
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE HIREDATE > '31-DEC-1983' AND
+	DNAME IN ('ACCOUNTING','RESEARCH');
+O/P:
+
+ENAME      DNAME          HIREDATE
+---------- -------------- ---------
+SCOTT      RESEARCH       19-APR-87
+ADAMS      RESEARCH       23-MAY-87
+
+31] WAQTD ENAME, DNAME, COMMISSION & DEPTNO of the employees who are getting COMM in DEPTNO 10 or 30.
+ANS:
+SELECT DNAME,COMM,E.DEPTNO
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE E.DEPTNO IN (10,30)AND
+	COMM IS NOT NULL;
+O/P:
+DNAME                COMM     DEPTNO
+-------------- ---------- ----------
+SALES                 300         30
+SALES                 500         30
+SALES                1400         30
+SALES                   0         30
+
+32] WAQTD DNAME & EMPNO for all the employees whose EMPNO are (7839, 7902) & are working in LOC = ‘NEW YORK’.
+ANS:
+SELECT DNAME,EMPNO
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE  EMPNO IN (7839,7902)AND
+	LOC = 'NEW YORK';
+O/P:
+DNAME               EMPNO
+-------------- ----------
+ACCOUNTING           7839
+
+33] WAQTD ENAME & DNAME who are earning more than ‘SMITH’.
+ANS:
+SELECT ENAME,DNAME
+FROM EMP E INNER JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE SAL > (SELECT SAL
+		FROM EMP
+		WHERE ENAME = 'SMITH');
+O/P:
+ENAME      DNAME
+---------- ------------
+ALLEN      SALES
+WARD       SALES
+JONES      RESEARCH
+MARTIN     SALES
+BLAKE      SALES
+CLARK      ACCOUNTING
+SCOTT      RESEARCH
+KING       ACCOUNTING
+TURNER     SALES
+ADAMS      RESEARCH
+JAMES      SALES
+FORD       RESEARCH
+MILLER     ACCOUNTING
+
+
+
